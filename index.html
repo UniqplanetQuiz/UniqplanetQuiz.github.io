@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UniQFriends – Character Quiz</title>
+  <style>
+    :root{
+      --purple:#3a025b;
+      --beige:#F6ebbb;
+      --brown:#3b211a;
+      --card:#ffffffcc;
+      --ink:var(--brown);
+      --brand:var(--purple);
+      --brand-2:#5d0b8c;
+      /* Pastel bar colors per character */
+      --c-uri:#a4c8ff;
+      --c-buni:#b6f7d0;
+      --c-marsy:#d9b79a;
+      --c-veny:#ffc49a;
+      --c-moony:#d6c6ff;
+      --c-pluty:#ffb3d1;
+      --c-sunny:#ffe28a;
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      min-height:100vh; margin:0; color:var(--ink); line-height:1.5;
+      background:url('https://i.ibb.co/wrSgCpMc/9dbcf0b1c7021ed2a22361ad29ab98fe.jpg') center/cover fixed no-repeat;
+      overflow-x:hidden;
+    }
+    /* FLOATING CHARACTER IMAGES */
+    .bg-decor{ position:fixed; inset:0; pointer-events:none; z-index:2; }
+    .float{ position:absolute; opacity:.22; filter: drop-shadow(0 14px 34px rgba(0,0,0,.18)); animation: drift 30s ease-in-out infinite; border-radius:50%; clip-path:circle(50% at 50% 50%); }
+    .f1{ top:-40px; left:-40px; width:240px; animation-delay:-2s }
+    .f2{ top:6%; right:-60px; width:280px; animation-delay:-12s }
+    .f3{ bottom:-50px; left:-20px; width:260px; animation-delay:-20s }
+    .f4{ bottom:10%; right:4%; width:260px; animation-delay:-6s }
+    .f5{ top:35%; left:-60px; width:220px; animation-delay:-16s }
+    .f6{ top:40%; right:-50px; width:220px; animation-delay:-26s }
+    .f7{ top:75%; left:50%; transform:translateX(-50%); width:200px; animation-delay:-8s }
+    @keyframes drift{ 0%,100%{ transform:translateY(0) rotate(0deg) scale(1) } 50%{ transform:translateY(-16px) rotate(2deg) scale(1.03) } }
+
+    header{ text-align:center; padding:32px 16px 12px; position:relative; z-index:3; }
+    h1{ margin:0; color:#fff; font-size:32px; text-shadow:0 2px 6px rgba(0,0,0,.6); }
+    p.lead{ margin:8px 0 0; color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.6);}    
+
+    .wrap{ max-width: 900px; margin: 0 auto; padding: 0 16px 60px; position:relative; z-index:4; }
+    .card{ background:var(--card); border:1px solid rgba(0,0,0,0.06); border-radius:16px; padding:18px; box-shadow:0 8px 30px rgba(0,0,0,0.1); }
+    .stack{ display:grid; gap:16px; }
+
+    .question{ border:1px solid rgba(0,0,0,0.06); border-radius:14px; padding:14px; background:var(--beige) }
+    .question h3{ margin:0 0 8px; font-size:16px; color:var(--purple); }
+    label{ display:block; padding:6px 8px; border-radius:10px; cursor:pointer; background:#fff8; }
+    label:hover{ background:rgba(255,255,255,0.9) }
+
+    .actions{ display:flex; gap:12px; margin-top:8px }
+    button{ flex:1; background:var(--brand); color:#fff; border:0; padding:12px 16px; border-radius:12px; font-size:16px; cursor:pointer }
+    button:hover{ background:var(--brand-2) }
+    button.secondary{ background:#efeaf7; color:var(--brand) }
+
+    #result{ margin-top:12px; background:var(--beige); border:1px solid rgba(0,0,0,0.08); border-radius:16px; padding:16px }
+    .titleline{ font-weight:700; margin-bottom:10px; color:var(--purple); }
+    .rowline{ display:flex; align-items:center; gap:10px; margin:8px 0 }
+    .name{ min-width:110px; color:var(--brown); }
+    .bar{ height:12px; background:#eee; border-radius:999px; overflow:hidden; flex:1 }
+    .bar>span{ display:block; height:100%; }
+    .pct{ min-width:64px; text-align:right; font-variant-numeric:tabular-nums; color:var(--brown); }
+
+    .winner{ display:flex; align-items:center; gap:14px; margin-bottom:10px }
+    .winner img{ width:72px; height:72px; object-fit:cover; border-radius:50%; border:3px solid #fff; box-shadow:0 6px 18px rgba(0,0,0,.08); clip-path: circle(50% at 50% 50%); }
+  </style>
+</head>
+<body>
+  <!-- FLOATING CHARACTER LAYER -->
+  <div class="bg-decor" id="bgDecor"></div>
+
+  <header>
+    <h1>UniQFriends – Character Quiz</h1>
+    <p class="lead">Find out which UniqStar you will get!</p>
+  </header>
+
+  <main class="wrap">
+    <section class="card stack" style="margin-top:16px">
+      <form id="quizForm" class="stack">
+        <div class="question">
+          <h3>Q1: What do you love doing most on a free day?</h3>
+          <label><input type="radio" name="Q1" value="A" required> A) Being creative like drawing, sculpting, painting, knitting.</label>
+          <label><input type="radio" name="Q1" value="B"> B) Cooking or baking something tasty.</label>
+          <label><input type="radio" name="Q1" value="C"> C) Enjoying silence or reading a book.</label>
+          <label><input type="radio" name="Q1" value="D"> D) Gaming or watching videos.</label>
+        </div>
+
+        <div class="question">
+          <h3>Q2: How do you deal with stress?</h3>
+          <label><input type="radio" name="Q2" value="A" required> A) Dancing, singing, or being active.</label>
+          <label><input type="radio" name="Q2" value="B"> B) Doing something quietly for yourself.</label>
+          <label><input type="radio" name="Q2" value="C"> C) Shopping / online shopping.</label>
+          <label><input type="radio" name="Q2" value="D"> D) Doomscrolling or watching silly videos.</label>
+        </div>
+
+        <div class="question">
+          <h3>Q3: How would you describe your eating style?</h3>
+          <label><input type="radio" name="Q3" value="A" required> A) Fruit, or something light / refreshing.</label>
+          <label><input type="radio" name="Q3" value="B"> B) Fried and spicy food.</label>
+          <label><input type="radio" name="Q3" value="C"> C) Comfort food like soup, pasta, or something warm.</label>
+          <label><input type="radio" name="Q3" value="D"> D) Sweets, snacks.</label>
+        </div>
+
+        <div class="question">
+          <h3>Q4: What do you find the most annoying in people?</h3>
+          <label><input type="radio" name="Q4" value="A" required> A) Messiness and constantly interrupting you.</label>
+          <label><input type="radio" name="Q4" value="B"> B) Dishonesty or fakeness.</label>
+          <label><input type="radio" name="Q4" value="C"> C) Judging, seeing you as naïve or dumb.</label>
+          <label><input type="radio" name="Q4" value="D"> D) Being too serious / no humor.</label>
+        </div>
+
+        <div class="question">
+          <h3>Q5: What gives you energy?</h3>
+          <label><input type="radio" name="Q5" value="A" required> A) Binge-watching or sitting in a quiet café.</label>
+          <label><input type="radio" name="Q5" value="B"> B) Creating something UniQ or doing a creative hobby.</label>
+          <label><input type="radio" name="Q5" value="C"> C) Having conversations with people.</label>
+          <label><input type="radio" name="Q5" value="D"> D) Funny videos and people with good humor.</label>
+        </div>
+
+        <div class="question">
+          <h3>Q6: What describes you the most?</h3>
+          <label><input type="radio" name="Q6" value="A" required> A) Caring, quiet but strong.</label>
+          <label><input type="radio" name="Q6" value="B"> B) Spontaneous, creative, and curious.</label>
+          <label><input type="radio" name="Q6" value="C"> C) Social, goal-oriented, and reliable.</label>
+          <label><input type="radio" name="Q6" value="D"> D) Funny, and a little chaotic.</label>
+        </div>
+
+        <div class="actions">
+          <button type="submit">See my result</button>
+          <button type="button" class="secondary" id="resetBtn">Reset</button>
+        </div>
+      </form>
+
+      <div id="result" class="card"></div>
+    </section>
+  </main>
+
+  <script>
+    // 1) Characters & direct image links
+    const CHARACTERS = ["Uri", "Buni", "Marsy", "Veny", "Moony", "Pluty", "Sunny"];
+    const IMAGE_SOURCES = {
+      Pluty:["https://i.ibb.co/tphSgHQn/IMG-0607.webp"],
+      Sunny:["https://i.ibb.co/G4ZcBtxX/IMG-05994.webp"],
+      Moony:["https://i.ibb.co/CK248Zfr/IMG-05993.webp"],
+      Uri:[  "https://i.ibb.co/Kz6HxB4Y/IMG-05995.webp"],
+      Marsy:["https://i.ibb.co/cSYd4dQy/IMG-0599.webp"],
+      Veny:[ "https://i.ibb.co/j0qT4cv/IMG-05991.webp"],
+      Buni:[ "https://i.ibb.co/xSy5hrzR/buni.jpg"]
+    };
+
+    // 2) Render floating background images (all characters)
+    const BG_ORDER = ["Pluty","Sunny","Moony","Uri","Marsy","Veny","Buni"];
+    function attachImage(imgEl, sources){
+      let i=0; function next(){ if(i>=sources.length){ imgEl.remove(); return; } imgEl.src=sources[i++]; }
+      imgEl.addEventListener('error', next); next();
+    }
+    (function renderBackground(){
+      const bg = document.getElementById('bgDecor');
+      bg.innerHTML = '';
+      BG_ORDER.forEach((name,idx)=>{
+        const srcs = IMAGE_SOURCES[name]||[]; if(!srcs.length) return;
+        const img=document.createElement('img');
+        img.alt=name; img.className=`float f${idx+1}`; attachImage(img, srcs); bg.appendChild(img);
+      });
+    })();
+
+    // 3) Scoring
+    const POINTS = {
+      Q1: { A:{Buni:1,Uri:1}, B:{Sunny:1,Moony:1}, C:{Moony:1,Pluty:1}, D:{Marsy:1,Veny:1} },
+      Q2: { A:{Uri:1,Moony:1}, B:{Pluty:1,Buni:1}, C:{Sunny:1}, D:{Marsy:1,Veny:1,Buni:1} },
+      Q3: { A:{Sunny:1}, B:{Marsy:1,Buni:1}, C:{Uri:1,Moony:1}, D:{Veny:1} },
+      Q4: { A:{Pluty:1}, B:{Sunny:1,Moony:1}, C:{Buni:1}, D:{Marsy:1,Pluty:1} },
+      Q5: { A:{Marsy:1,Uri:1}, B:{Pluty:1,Buni:1}, C:{Moony:1,Sunny:1}, D:{Veny:1} },
+      Q6: { A:{Pluty:1,Uri:1}, B:{Buni:1}, C:{Moony:1,Sunny:1}, D:{Veny:1,Marsy:1} }
+    };
+
+    // 4) Quiz logic
+    const form = document.getElementById('quizForm');
+    const resultBox = document.getElementById('result');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function computeScores(answers){
+      const totals = Object.fromEntries(CHARACTERS.map(c=>[c,0]));
+      for(const q in answers){
+        const a = answers[q];
+        if(POINTS[q] && POINTS[q][a]){
+          for(const c in POINTS[q][a]) totals[c]+=POINTS[q][a][c];
+        }
+      }
+      const sum = Object.values(totals).reduce((x,y)=>x+y,0);
+      const pct = Object.fromEntries(CHARACTERS.map(c=>[c, sum? (totals[c]/sum)*100 : 0 ]));
+      const winner = CHARACTERS.reduce((best,c)=> totals[c]>totals[best]?c:best, CHARACTERS[0]);
+      return {totals,pct,winner};
+    }
+
+    const COLOR = { Uri:'var(--c-uri)', Buni:'var(--c-buni)', Marsy:'var(--c-marsy)', Veny:'var(--c-veny)', Moony:'var(--c-moony)', Pluty:'var(--c-pluty)', Sunny:'var(--c-sunny)' };
+
+    function renderResult({pct,winner}){
+      const winImg = document.createElement('img');
+      winImg.alt = winner; winImg.width=72; winImg.height=72; winImg.style.borderRadius='50%';
+      winImg.style.clipPath = 'circle(50% at 50% 50%)';
+      attachImage(winImg, IMAGE_SOURCES[winner]||[]);
+
+      const bars = CHARACTERS.map(c=>{
+        const v = pct[c]; const w = Math.max(2, Math.min(100, v)).toFixed(1);
+        const color = COLOR[c] || '#ddd';
+        return `
+          <div class="rowline">
+            <strong class="name">${c}</strong>
+            <div class="bar"><span style="width:${w}%; background:${color}"></span></div>
+            <div class="pct">${v.toFixed(1)}%</div>
+          </div>`;
+      }).join('');
+
+      resultBox.innerHTML = '';
+      const head = document.createElement('div'); head.className='winner';
+      const title = document.createElement('div'); title.className='titleline'; title.innerHTML = `Most likely: <strong>${winner}</strong>`;
+      head.appendChild(winImg); head.appendChild(title);
+      resultBox.appendChild(head);
+      resultBox.insertAdjacentHTML('beforeend', bars);
+      resultBox.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = new FormData(form); const answers={};
+      for(const [k,v] of data.entries()) answers[k]=v;
+      const out = computeScores(answers); renderResult(out);
+    });
+
+    resetBtn.addEventListener('click', ()=>{ form.reset(); resultBox.innerHTML=''; });
+  </script>
+</body>
+</html>
