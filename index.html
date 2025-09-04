@@ -5,23 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>UniQFriends – Character Quiz</title>
 
-  <!-- Confetti (tiny, CDN) -->
+  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <style>
     :root{
       --purple:#3a025b; --beige:#F6ebbb; --brown:#3b211a;
       --card:#ffffffcc; --ink:var(--brown); --brand:var(--purple); --brand-2:#5d0b8c;
-      /* Pastel bar colors */
+      /* Pastel bar colors / character palettes */
       --c-uri:#a4c8ff; --c-buni:#b6f7d0; --c-marsy:#d9b79a; --c-veny:#ffc49a;
       --c-moony:#d6c6ff; --c-pluty:#ffb3d1; --c-sunny:#ffe28a;
     }
     *{box-sizing:border-box}
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100vh;margin:0;color:var(--ink);line-height:1.5;background:url('https://i.ibb.co/wrSgCpMc/9dbcf0b1c7021ed2a22361ad29ab98fe.jpg') center/cover fixed no-repeat;overflow-x:hidden}
+    html,body{height:100%}
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      min-height:100vh;margin:0;color:var(--ink);line-height:1.5;overflow-x:hidden
+    }
+
+    /* ===== Animated space background (canvas) — more purple & spacey ===== */
+    #space{ position:fixed; inset:0; z-index:1; background:#0b0015; display:block }
 
     /* FLOATING CHARACTER IMAGES (over the background) */
     .bg-decor{position:fixed;inset:0;pointer-events:none;z-index:2}
-    .float{position:absolute;opacity:.22;filter:drop-shadow(0 14px 34px rgba(0,0,0,.18));animation:drift 30s ease-in-out infinite;border-radius:50%;clip-path:circle(50% at 50% 50%)}
+    .float{
+      position:absolute;opacity:.26;filter:drop-shadow(0 24px 46px rgba(58,2,91,.35));animation:drift 30s ease-in-out infinite; border-radius:50%;
+      /* Crop tighter + soften edge to reduce white halos in source images */
+      clip-path:circle(44% at 50% 50%);
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 68%, transparent 72%);
+              mask-image: radial-gradient(circle at 50% 50%, #000 68%, transparent 72%);
+      object-fit:cover; object-position:center; mix-blend-mode:screen;
+    }
     .f1{top:-40px;left:-40px;width:240px;animation-delay:-2s}
     .f2{top:6%;right:-60px;width:280px;animation-delay:-12s}
     .f3{bottom:-50px;left:-20px;width:260px;animation-delay:-20s}
@@ -59,7 +73,7 @@
     button:hover{background:var(--brand-2)}
     button.secondary{background:#efeaf7;color:var(--brand)}
 
-    #result{margin-top:12px;background:var(--beige);border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:16px}
+    #result{margin-top:12px;background:var(--beige);border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:16px;transition: box-shadow .25s ease, background .25s ease, border-color .25s ease}
     .titleline{font-weight:700;margin-bottom:10px;color:var(--purple)}
     .rowline{display:flex;align-items:center;gap:10px;margin:8px 0}
     .name{min-width:110px;color:var(--brown)}
@@ -68,15 +82,26 @@
     .pct{min-width:64px;text-align:right;font-variant-numeric:tabular-nums;color:var(--brown)}
 
     .winner{display:flex;align-items:center;gap:14px;margin-bottom:10px}
-    .winner img{width:72px;height:72px;object-fit:cover;border-radius:50%;border:3px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.08);clip-path:circle(50% at 50% 50%)}
+    .winner img{width:72px;height:72px;object-fit:cover;border-radius:50%;border:3px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.25);clip-path:circle(50% at 50% 50%)}
+
+    /* Reveal Animations */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .5s ease, transform .5s ease}
+    .reveal.show{opacity:1;transform:translateY(0)}
 
     /* Share/Toast */
-    .share-row{display:flex;gap:8px;margin-top:10px}
+    .share-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
     .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#000;color:#fff;padding:10px 14px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:9}
     .toast.show{opacity:0.9}
+
+    /* Badge preview */
+    .badge-preview{margin-top:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .badge-preview img{width:160px;height:160px;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.15);object-fit:cover}
   </style>
 </head>
 <body>
+  <!-- Animated Space Background -->
+  <canvas id="space"></canvas>
+
   <!-- FLOATING CHARACTER LAYER -->
   <div class="bg-decor" id="bgDecor"></div>
 
@@ -96,7 +121,7 @@
   <main class="wrap">
     <section class="card stack" style="margin-top:16px">
       <form id="quizForm" class="stack">
-        <div class="question">
+        <div class="question reveal">
           <h3>Q1: What do you love doing most on a free day?</h3>
           <label><input type="radio" name="Q1" value="A" required> A) Being creative like drawing, sculpting, painting, knitting.</label>
           <label><input type="radio" name="Q1" value="B"> B) Cooking or baking something tasty.</label>
@@ -104,7 +129,7 @@
           <label><input type="radio" name="Q1" value="D"> D) Gaming or watching videos.</label>
         </div>
 
-        <div class="question">
+        <div class="question reveal">
           <h3>Q2: How do you deal with stress?</h3>
           <label><input type="radio" name="Q2" value="A" required> A) Dancing, singing, or being active.</label>
           <label><input type="radio" name="Q2" value="B"> B) Doing something quietly for yourself.</label>
@@ -112,7 +137,7 @@
           <label><input type="radio" name="Q2" value="D"> D) Doomscrolling or watching silly videos.</label>
         </div>
 
-        <div class="question">
+        <div class="question reveal">
           <h3>Q3: How would you describe your eating style?</h3>
           <label><input type="radio" name="Q3" value="A" required> A) Fruit, or something light / refreshing.</label>
           <label><input type="radio" name="Q3" value="B"> B) Fried and spicy food.</label>
@@ -120,7 +145,7 @@
           <label><input type="radio" name="Q3" value="D"> D) Sweets, snacks.</label>
         </div>
 
-        <div class="question">
+        <div class="question reveal">
           <h3>Q4: What do you find the most annoying in people?</h3>
           <label><input type="radio" name="Q4" value="A" required> A) Messiness and constantly interrupting you.</label>
           <label><input type="radio" name="Q4" value="B"> B) Dishonesty or fakeness.</label>
@@ -128,7 +153,7 @@
           <label><input type="radio" name="Q4" value="D"> D) Being too serious / no humor.</label>
         </div>
 
-        <div class="question">
+        <div class="question reveal">
           <h3>Q5: What gives you energy?</h3>
           <label><input type="radio" name="Q5" value="A" required> A) Binge-watching or sitting in a quiet café.</label>
           <label><input type="radio" name="Q5" value="B"> B) Creating something UniQ or doing a creative hobby.</label>
@@ -136,7 +161,7 @@
           <label><input type="radio" name="Q5" value="D"> D) Funny videos and people with good humor.</label>
         </div>
 
-        <div class="question">
+        <div class="question reveal">
           <h3>Q6: What describes you the most?</h3>
           <label><input type="radio" name="Q6" value="A" required> A) Caring, quiet but strong.</label>
           <label><input type="radio" name="Q6" value="B"> B) Spontaneous, creative, and curious.</label>
@@ -144,19 +169,83 @@
           <label><input type="radio" name="Q6" value="D"> D) Funny, and a little chaotic.</label>
         </div>
 
-        <div class="actions">
+        <div class="actions reveal">
           <button type="submit">See my result</button>
           <button type="button" class="secondary" id="resetBtn">Reset</button>
         </div>
       </form>
 
-      <div id="result" class="card"></div>
+      <div id="result" class="card reveal"></div>
     </section>
   </main>
 
   <div class="toast" id="toast">Link copied!</div>
 
   <script>
+    /* ===== Animated starfield (canvas) — purple galaxy look ===== */
+    (function(){
+      const canvas=document.getElementById('space');
+      const ctx=canvas.getContext('2d');
+      let w,h,pr=window.devicePixelRatio||1; const layers=[]; const L=3; let shooting=[];
+      function resize(){ w=canvas.width = innerWidth*pr; h=canvas.height = innerHeight*pr; canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px'; init(); }
+      function rand(a,b){ return a + Math.random()*(b-a); }
+      function init(){
+        layers.length=0; shooting.length=0;
+        for(let i=0;i<L;i++){
+          const count= (i+1)*120; const speed= (i+1)*0.025; const stars=[];
+          for(let s=0;s<count;s++){
+            stars.push({x:Math.random()*w,y:Math.random()*h,size:rand(0.6,1.8)*(i+1),tw:Math.random()*Math.PI*2});
+          }
+          layers.push({speed,stars});
+        }
+      }
+      function addShooting(){
+        if(Math.random()<0.02){ // occasional
+          const y=rand(0,h*0.6); shooting.push({x:-50,y, vx:rand(6,10)*pr, vy:rand(-1,1)*pr, life:rand(30,60)});
+        }
+      }
+      function bg(){
+        const g=ctx.createRadialGradient(w*0.3,h*0.3,50, w*0.5,h*0.6, Math.max(w,h));
+        g.addColorStop(0,'#3a025b');
+        g.addColorStop(0.4,'#1d0033');
+        g.addColorStop(1,'#090013');
+        ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+        // subtle nebula fog
+        for(let i=0;i<2;i++){
+          const nx=rand(0,w), ny=rand(0,h), r=rand(h*0.2,h*0.5);
+          const ng=ctx.createRadialGradient(nx,ny,0, nx,ny,r);
+          ng.addColorStop(0, 'rgba(255,255,255,0.06)');
+          ng.addColorStop(1, 'rgba(255,255,255,0)');
+          ctx.fillStyle=ng; ctx.beginPath(); ctx.arc(nx,ny,r,0,Math.PI*2); ctx.fill();
+        }
+      }
+      function tick(){
+        bg();
+        ctx.fillStyle='#ffffff';
+        // parallax star layers with twinkle
+        layers.forEach((layer,li)=>{
+          const sp = layer.speed*pr;
+          layer.stars.forEach(st=>{
+            st.y += sp; if(st.y>h) st.y=0;
+            const t = 0.5 + 0.5*Math.sin(st.tw += 0.02 + li*0.008);
+            ctx.globalAlpha = 0.35 + 0.65*t;
+            ctx.beginPath(); ctx.arc(st.x, st.y, st.size, 0, Math.PI*2); ctx.fill();
+          });
+        });
+        ctx.globalAlpha=1;
+
+        // shooting stars
+        addShooting();
+        for(let i=shooting.length-1;i>=0;i--){ const s=shooting[i]; s.x+=s.vx; s.y+=s.vy; s.life--; if(s.life<=0||s.x>w+100) shooting.splice(i,1);
+          const grad=ctx.createLinearGradient(s.x-60,s.y-10, s.x,s.y);
+          grad.addColorStop(0,'rgba(255,255,255,0)'); grad.addColorStop(1,'rgba(255,255,255,0.9)');
+          ctx.strokeStyle=grad; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(s.x-60,s.y-10); ctx.lineTo(s.x,s.y); ctx.stroke();
+        }
+        requestAnimationFrame(tick);
+      }
+      addEventListener('resize', resize, {passive:true}); resize(); tick();
+    })();
+
     // Characters & images
     const CHARACTERS = ["Uri","Buni","Marsy","Veny","Moony","Pluty","Sunny"];
     const IMAGE_SOURCES = {
@@ -171,8 +260,8 @@
 
     // Floating background characters
     const BG_ORDER = ["Pluty","Sunny","Moony","Uri","Marsy","Veny","Buni"];
-    function attachImage(imgEl, sources){let i=0;function next(){if(i>=sources.length){imgEl.remove();return;}imgEl.src=sources[i++];}imgEl.addEventListener('error',next);next();}
-    (function renderBackground(){const bg=document.getElementById('bgDecor');bg.innerHTML='';BG_ORDER.forEach((name,idx)=>{const srcs=IMAGE_SOURCES[name]||[];if(!srcs.length)return;const img=document.createElement('img');img.alt=name;img.className=`float f${idx+1}`;attachImage(img,srcs);bg.appendChild(img);});})();
+    function attachImage(imgEl, sources){let i=0;function next(){if(i>=sources.length){ imgEl.remove(); return;} imgEl.src=sources[i++];} imgEl.addEventListener('error',next); next();}
+    (function renderBackground(){const bg=document.getElementById('bgDecor'); bg.innerHTML=''; BG_ORDER.forEach((name,idx)=>{ const srcs=IMAGE_SOURCES[name]||[]; if(!srcs.length) return; const img=document.createElement('img'); img.alt=name; img.className=`float f${idx+1}`; attachImage(img,srcs); bg.appendChild(img); });})();
 
     // Scoring
     const POINTS={
@@ -194,12 +283,23 @@
 
     const COLOR={Uri:'var(--c-uri)',Buni:'var(--c-buni)',Marsy:'var(--c-marsy)',Veny:'var(--c-veny)',Moony:'var(--c-moony)',Pluty:'var(--c-pluty)',Sunny:'var(--c-sunny)'};
 
+    /* Palettes per character for result tint & badge theme */
+    const PALETTE={
+      Uri:{ring:'#6aa7ff', grad:'#dfeeff', text:'#3a025b', card:'rgba(164,200,255,0.25)', border:'#6aa7ff'},
+      Buni:{ring:'#46e09b', grad:'#e8fff4', text:'#3a025b', card:'rgba(182,247,208,0.25)', border:'#46e09b'},
+      Marsy:{ring:'#b8875e', grad:'#f6ede5', text:'#3a025b', card:'rgba(217,183,154,0.25)', border:'#b8875e'},
+      Veny:{ring:'#ff9c4c', grad:'#fff0e1', text:'#3a025b', card:'rgba(255,196,154,0.25)', border:'#ff9c4c'},
+      Moony:{ring:'#a796ff', grad:'#f1edff', text:'#3a025b', card:'rgba(214,198,255,0.25)', border:'#a796ff'},
+      Pluty:{ring:'#ff7fb0', grad:'#fff0f6', text:'#3a025b', card:'rgba(255,179,209,0.25)', border:'#ff7fb0'},
+      Sunny:{ring:'#f2c94c', grad:'#fff7d8', text:'#3a025b', card:'rgba(255,226,138,0.25)', border:'#f2c94c'}
+    };
+
     function computeScores(answers){
       const totals=Object.fromEntries(CHARACTERS.map(c=>[c,0]));
-      for(const q in answers){const a=answers[q];if(POINTS[q]&&POINTS[q][a]){for(const c in POINTS[q][a]) totals[c]+=POINTS[q][a][c];}}
+      for(const q in answers){const a=answers[q]; if(POINTS[q]&&POINTS[q][a]){ for(const c in POINTS[q][a]) totals[c]+=POINTS[q][a][c]; }}
       const sum=Object.values(totals).reduce((x,y)=>x+y,0);
       const pct=Object.fromEntries(CHARACTERS.map(c=>[c,sum?(totals[c]/sum)*100:0]));
-      const winner=CHARACTERS.reduce((best,c)=>totals[c]>totals[best]?c:best,CHARACTERS[0]);
+      const winner=CHARACTERS.reduce((best,c)=> totals[c]>totals[best]?c:best, CHARACTERS[0]);
       return{totals,pct,winner};
     }
 
@@ -212,46 +312,108 @@
 
     function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1300); }
 
+    // Reveal-on-scroll animations
+    const io = new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); }); },{threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
     function renderResult({pct,winner}){
       // Winner image
       const winImg=document.createElement('img'); winImg.alt=winner; winImg.width=72; winImg.height=72; winImg.style.borderRadius='50%'; winImg.style.clipPath='circle(50% at 50% 50%)'; attachImage(winImg, IMAGE_SOURCES[winner]||[]);
 
       // Bars
-      const bars=CHARACTERS.map(c=>{const v=pct[c]; const w=Math.max(2,Math.min(100,v)).toFixed(1); const color=COLOR[c]||'#ddd'; return `
+      const bars=CHARACTERS.map(c=>{ const v=pct[c]; const w=Math.max(2,Math.min(100,v)).toFixed(1); const color=COLOR[c]||'#ddd'; return `
         <div class="rowline">
           <strong class="name">${c}</strong>
           <div class="bar"><span style="width:${w}%; background:${color}"></span></div>
           <div class="pct">${v.toFixed(1)}%</div>
-        </div>`;}).join('');
+        </div>`; }).join('');
 
-      resultBox.innerHTML='';
+      // Tint result box to winner palette + subtle glow
+      const pal = PALETTE[winner] || {card:'rgba(246,235,187,0.25)', border:'#3a025b'};
+      resultBox.style.background = pal.card;
+      resultBox.style.borderColor = pal.border;
+      resultBox.style.boxShadow = `0 10px 30px ${pal.border}55, inset 0 0 0 1px ${pal.border}33`;
+
+      resultBox.innerHTML=''; resultBox.classList.remove('show');
+
+      // Title row
       const head=document.createElement('div'); head.className='winner';
       const title=document.createElement('div'); title.className='titleline'; title.innerHTML=`Most likely: <strong>${winner}</strong>`;
       head.appendChild(winImg); head.appendChild(title); resultBox.appendChild(head);
+
+      // Bars
       resultBox.insertAdjacentHTML('beforeend', bars);
 
-      // Share row
+      // Share row + badge row
       const shareRow=document.createElement('div'); shareRow.className='share-row';
       const shareBtn=document.createElement('button'); shareBtn.type='button'; shareBtn.textContent='Share my result';
-      shareBtn.onclick=async()=>{
-        const url=location.href.split('#')[0];
-        const text=`I got ${winner} on the UniQFriends quiz! ✨`;
-        try{
-          if(navigator.share){ await navigator.share({title:'My UniQStar',text, url}); }
-          else{ await navigator.clipboard.writeText(`${text} ${url}`); showToast('Link copied!'); }
-        }catch(e){ await navigator.clipboard.writeText(`${text} ${url}`); showToast('Link copied!'); }
-      };
-      shareRow.appendChild(shareBtn); resultBox.appendChild(shareRow);
+      shareBtn.onclick=async()=>{ const url=location.href.split('#')[0]; const text=`I got ${winner} on the UniQFriends quiz! ✨`; try{ if(navigator.share){ await navigator.share({title:'My UniQStar',text,url}); } else { await navigator.clipboard.writeText(`${text} ${url}`); showToast('Link copied!'); } } catch{ await navigator.clipboard.writeText(`${text} ${url}`); showToast('Link copied!'); } };
 
+      const badgeWrap=document.createElement('div'); badgeWrap.className='badge-preview';
+      const dlBtn=document.createElement('button'); dlBtn.type='button'; dlBtn.textContent='Download badge';
+      const badgeImg=document.createElement('img'); badgeImg.alt=`${winner} badge`;
+      dlBtn.onclick=()=>createBadge(winner, badgeImg);
+
+      shareRow.appendChild(shareBtn);
+      badgeWrap.appendChild(dlBtn); badgeWrap.appendChild(badgeImg);
+      resultBox.appendChild(shareRow); resultBox.appendChild(badgeWrap);
+
+      setTimeout(()=>resultBox.classList.add('show'), 30);
       resultBox.scrollIntoView({behavior:'smooth',block:'start'});
 
-      // 🎉 Confetti
-      confetti({particleCount:120,spread:80,origin:{y:0.6}});
-      setTimeout(()=>confetti({particleCount:90,spread:100,origin:{y:0.6}}),450);
+      // Confetti
+      confetti({particleCount:120,spread:80,origin:{y:0.6}}); setTimeout(()=>confetti({particleCount:90,spread:100,origin:{y:0.6}}),450);
     }
 
-    form.addEventListener('submit', (e)=>{ e.preventDefault(); const data=new FormData(form); const answers={}; for(const [k,v] of data.entries()) answers[k]=v; const out=computeScores(answers); renderResult(out); });
-    resetBtn.addEventListener('click', ()=>{ form.reset(); resultBox.innerHTML=''; updateProgress(); });
+    /* ===== Badge generator (text above & below, readable) ===== */
+    function createBadge(winner, previewImg){
+      const pal = PALETTE[winner] || {ring:'#3a025b', grad:'#F6ebbb', text:'#3a025b'};
+      const size = 900; const cx=size/2, cy=size/2; const canvas=document.createElement('canvas'); canvas.width=size; canvas.height=size; const ctx=canvas.getContext('2d');
+
+      // Background gradient themed per character
+      const bg = ctx.createRadialGradient(size*0.3,size*0.3,90, cx,cy,size*0.95);
+      bg.addColorStop(0, '#ffffff'); bg.addColorStop(1, pal.grad); ctx.fillStyle=bg; ctx.fillRect(0,0,size,size);
+
+      const imgRadius = size*0.30; const ringRadius = imgRadius + 18;
+
+      // Decorative ring
+      ctx.strokeStyle = pal.ring; ctx.lineWidth = 20; ctx.beginPath(); ctx.arc(cx, cy, ringRadius, 0, Math.PI*2); ctx.stroke();
+
+      // Winner image
+      const img=new Image(); img.crossOrigin='anonymous'; img.src=(IMAGE_SOURCES[winner]||[])[0]||'';
+      img.onload=()=>{
+        ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, imgRadius, 0, Math.PI*2); ctx.clip(); ctx.drawImage(img, cx-imgRadius, cy-imgRadius, imgRadius*2, imgRadius*2); ctx.restore();
+
+        // Text safely above & below the circle
+        ctx.fillStyle = pal.text; ctx.textAlign='center';
+        // Top title
+        fitText(ctx, `I am ${winner}!`, 'bold', 72, 'Arial', size*0.85, cy - imgRadius - 40);
+        // Bottom tagline
+        fitText(ctx, 'UniQFriends ✨', 'normal', 42, 'Arial', size*0.85, cy + imgRadius + 66);
+
+        const dataURL=canvas.toDataURL('image/png'); if(previewImg){ previewImg.src=dataURL; } const a=document.createElement('a'); a.href=dataURL; a.download=`${winner}-badge.png`; a.click();
+      };
+      img.onerror=()=>{
+        // Monogram fallback
+        ctx.fillStyle=pal.ring+'33'; ctx.beginPath(); ctx.arc(cx, cy, imgRadius, 0, Math.PI*2); ctx.fill(); ctx.fillStyle=pal.text; ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.font='bold 180px Arial'; ctx.fillText((winner||'?')[0], cx, cy+20);
+        ctx.textBaseline='alphabetic';
+        fitText(ctx, `I am ${winner}!`, 'bold', 72, 'Arial', size*0.85, cy - imgRadius - 40);
+        fitText(ctx, 'UniQFriends ✨', 'normal', 42, 'Arial', size*0.85, cy + imgRadius + 66);
+        const dataURL=canvas.toDataURL('image/png'); if(previewImg){ previewImg.src=dataURL; } const a=document.createElement('a'); a.href=dataURL; a.download=`${winner}-badge.png`; a.click();
+      };
+
+      // Fit text helper (auto scales to max width)
+      function fitText(ctx, text, weight, maxSize, family, maxWidth, y){
+        let size=maxSize; ctx.font=`${weight} ${size}px ${family}`; while(ctx.measureText(text).width>maxWidth && size>18){ size-=2; ctx.font=`${weight} ${size}px ${family}`; }
+        ctx.fillText(text, cx, y);
+      }
+    }
+
+    function handleSubmit(e){ e.preventDefault(); const data=new FormData(form); const answers={}; for(const [k,v] of data.entries()) answers[k]=v; const out=computeScores(answers); renderResult(out); }
+
+    form.addEventListener('submit', handleSubmit);
+    resetBtn.addEventListener('click', ()=>{ form.reset(); resultBox.innerHTML=''; resultBox.style.background='var(--beige)'; resultBox.style.borderColor='rgba(0,0,0,0.08)'; resultBox.style.boxShadow='0 8px 30px rgba(0,0,0,0.1)'; updateProgress(); });
     form.addEventListener('change', updateProgress);
     updateProgress();
   </script>
