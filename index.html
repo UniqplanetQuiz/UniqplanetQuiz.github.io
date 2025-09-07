@@ -54,7 +54,7 @@
     .progress .row{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px}
     .meter{height:8px;background:rgba(255,255,255,.3);border-radius:999px;overflow:hidden;flex:1}
     .meter>span{display:block;height:100%;background:#F6ebbb}
-    .progress .label{font-weight:600;min-width:120px}
+    .progress .label{font-weight:600;min-width:140px}
 
     .wrap{max-width:900px;margin:0 auto;padding:0 16px 64px;position:relative;z-index:4}
     .card{background:var(--card);border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.1)}
@@ -113,60 +113,191 @@
   <!-- Progress Bar -->
   <div class="progress">
     <div class="row">
-      <div class="label" id="progressLabel">Question 1 of 6</div>
-      <div class="meter"><span id="progressFill" style="width:16.6%"></span></div>
+      <div class="label" id="progressLabel">Question 1 of 18</div>
+      <div class="meter"><span id="progressFill" style="width:5.6%"></span></div>
     </div>
   </div>
 
   <main class="wrap">
     <section class="card stack" style="margin-top:16px">
       <form id="quizForm" class="stack">
+        <!-- Q1 -->
         <div class="question reveal">
-          <h3>Q1: What do you love doing most on a free day?</h3>
-          <label><input type="radio" name="Q1" value="A" required> A) Being creative like drawing, sculpting, painting, knitting.</label>
-          <label><input type="radio" name="Q1" value="B"> B) Cooking or baking something tasty.</label>
-          <label><input type="radio" name="Q1" value="C"> C) Enjoying silence or reading a book.</label>
-          <label><input type="radio" name="Q1" value="D"> D) Gaming or watching videos.</label>
+          <h3>Q1: What do you like most on your free day?</h3>
+          <label><input type="radio" name="Q1" value="A" required> A) Going out to try new food/activities</label>
+          <label><input type="radio" name="Q1" value="B"> B) Being alone, spend time at home</label>
+          <label><input type="radio" name="Q1" value="C"> C) Go out, shopping/partying</label>
+          <label><input type="radio" name="Q1" value="D"> D) Gaming/binge-watching</label>
         </div>
 
+        <!-- Q2 -->
         <div class="question reveal">
           <h3>Q2: How do you deal with stress?</h3>
-          <label><input type="radio" name="Q2" value="A" required> A) Dancing, singing, or being active.</label>
-          <label><input type="radio" name="Q2" value="B"> B) Doing something quietly for yourself.</label>
-          <label><input type="radio" name="Q2" value="C"> C) Shopping / online shopping.</label>
-          <label><input type="radio" name="Q2" value="D"> D) Doomscrolling or watching silly videos.</label>
+          <label><input type="radio" name="Q2" value="A" required> A) Singing, dancing</label>
+          <label><input type="radio" name="Q2" value="B"> B) Doing something creative or eating</label>
+          <label><input type="radio" name="Q2" value="C"> C) Shopping or treating yourself</label>
+          <label><input type="radio" name="Q2" value="D"> D) Escaping into games or silly videos</label>
+          <label><input type="radio" name="Q2" value="E"> E) Talking it out with someone close</label>
         </div>
 
+        <!-- Q3 -->
         <div class="question reveal">
-          <h3>Q3: How would you describe your eating style?</h3>
-          <label><input type="radio" name="Q3" value="A" required> A) Fruit, or something light / refreshing.</label>
-          <label><input type="radio" name="Q3" value="B"> B) Fried and spicy food.</label>
-          <label><input type="radio" name="Q3" value="C"> C) Comfort food like soup, pasta, or something warm.</label>
-          <label><input type="radio" name="Q3" value="D"> D) Sweets, snacks.</label>
+          <h3>Q3: What kind of food fits you best?</h3>
+          <label><input type="radio" name="Q3" value="A" required> A) Refreshing like light meals & drinks (tea)</label>
+          <label><input type="radio" name="Q3" value="B"> B) Fried or spicy food</label>
+          <label><input type="radio" name="Q3" value="C"> C) Warm cozy meals like pasta, soup</label>
+          <label><input type="radio" name="Q3" value="D"> D) Sweets & snacks</label>
+          <label><input type="radio" name="Q3" value="E"> E) Vegan meals!</label>
         </div>
 
+        <!-- Q4 -->
         <div class="question reveal">
-          <h3>Q4: What do you find the most annoying in people?</h3>
-          <label><input type="radio" name="Q4" value="A" required> A) Messiness and constantly interrupting you.</label>
-          <label><input type="radio" name="Q4" value="B"> B) Dishonesty or fakeness.</label>
-          <label><input type="radio" name="Q4" value="C"> C) Judging, seeing you as naïve or dumb.</label>
-          <label><input type="radio" name="Q4" value="D"> D) Being too serious / no humor.</label>
+          <h3>Q4: What do you find most annoying in people?</h3>
+          <label><input type="radio" name="Q4" value="A" required> A) Dishonesty / fakeness</label>
+          <label><input type="radio" name="Q4" value="B"> B) Close-mindedness</label>
+          <label><input type="radio" name="Q4" value="C"> C) No sense of humor / too serious</label>
+          <label><input type="radio" name="Q4" value="D"> D) Messy & chaotic behavior</label>
+          <label><input type="radio" name="Q4" value="E"> E) Complaining without trying to change</label>
         </div>
 
+        <!-- Q5 -->
         <div class="question reveal">
-          <h3>Q5: What gives you energy?</h3>
-          <label><input type="radio" name="Q5" value="A" required> A) Binge-watching or sitting in a quiet café.</label>
-          <label><input type="radio" name="Q5" value="B"> B) Creating something UniQ or doing a creative hobby.</label>
-          <label><input type="radio" name="Q5" value="C"> C) Having conversations with people.</label>
-          <label><input type="radio" name="Q5" value="D"> D) Funny videos and people with good humor.</label>
+          <h3>Q5: Where do you get your energy from?</h3>
+          <label><input type="radio" name="Q5" value="A" required> A) Food… duh</label>
+          <label><input type="radio" name="Q5" value="B"> B) New people</label>
+          <label><input type="radio" name="Q5" value="C"> C) Gaming or watching movie</label>
+          <label><input type="radio" name="Q5" value="D"> D) Working</label>
+          <label><input type="radio" name="Q5" value="E"> E) Listening to music/singing</label>
         </div>
 
+        <!-- Q6 -->
         <div class="question reveal">
           <h3>Q6: What describes you the most?</h3>
-          <label><input type="radio" name="Q6" value="A" required> A) Caring, quiet but strong.</label>
-          <label><input type="radio" name="Q6" value="B"> B) Spontaneous, creative, and curious.</label>
-          <label><input type="radio" name="Q6" value="C"> C) Social, goal-oriented, and reliable.</label>
-          <label><input type="radio" name="Q6" value="D"> D) Funny, and a little chaotic.</label>
+          <label><input type="radio" name="Q6" value="A" required> A) Caring and kind</label>
+          <label><input type="radio" name="Q6" value="B"> B) Confident, goal oriented</label>
+          <label><input type="radio" name="Q6" value="C"> C) Playful, spontaneous, curious</label>
+          <label><input type="radio" name="Q6" value="D"> D) Funny, chaotic, loud</label>
+          <label><input type="radio" name="Q6" value="E"> E) Clever, quiet, mysterious</label>
+        </div>
+
+        <!-- Q7 -->
+        <div class="question reveal">
+          <h3>Q7: What’s your dream vacation?</h3>
+          <label><input type="radio" name="Q7" value="A" required> A) Calm mountain or park with music</label>
+          <label><input type="radio" name="Q7" value="B"> B) Explore new food & cultural trip</label>
+          <label><input type="radio" name="Q7" value="C"> C) Arcade or amusement park/waterpark</label>
+          <label><input type="radio" name="Q7" value="D"> D) Beach with friends & laughter</label>
+          <label><input type="radio" name="Q7" value="E"> E) Stay at home</label>
+        </div>
+
+        <!-- Q8 -->
+        <div class="question reveal">
+          <h3>Q8: Which compliment makes you the happiest?</h3>
+          <label><input type="radio" name="Q8" value="A" required> A) You’re so impressive</label>
+          <label><input type="radio" name="Q8" value="B"> B) You’re hilarious</label>
+          <label><input type="radio" name="Q8" value="C"> C) You’re so cute/pretty</label>
+          <label><input type="radio" name="Q8" value="D"> D) You’re wise & ambitious</label>
+          <label><input type="radio" name="Q8" value="E"> E) You’re so clever</label>
+        </div>
+
+        <!-- Q9 -->
+        <div class="question reveal">
+          <h3>Q9: If you had a superpower, what would it be?</h3>
+          <label><input type="radio" name="Q9" value="A" required> A) Teleportation</label>
+          <label><input type="radio" name="Q9" value="B"> B) Shapeshifting</label>
+          <label><input type="radio" name="Q9" value="C"> C) Time traveling</label>
+          <label><input type="radio" name="Q9" value="D"> D) Flying</label>
+          <label><input type="radio" name="Q9" value="E"> E) Healing</label>
+        </div>
+
+        <!-- Q10 -->
+        <div class="question reveal">
+          <h3>Q10: What’s your favorite season?</h3>
+          <label><input type="radio" name="Q10" value="A" required> A) Winter (chilly, cozy)</label>
+          <label><input type="radio" name="Q10" value="B"> B) Autumn (productive, calm)</label>
+          <label><input type="radio" name="Q10" value="C"> C) Spring (fresh, full of life)</label>
+          <label><input type="radio" name="Q10" value="D"> D) Summer (wild, hot)</label>
+          <label><input type="radio" name="Q10" value="E"> E) Any season</label>
+        </div>
+
+        <!-- Q11 -->
+        <div class="question reveal">
+          <h3>Q11: If you were in space, what would you do first?</h3>
+          <label><input type="radio" name="Q11" value="A" required> A) Look out the window in awe</label>
+          <label><input type="radio" name="Q11" value="B"> B) Try to float out of the ship (with a suit!)</label>
+          <label><input type="radio" name="Q11" value="C"> C) Take notes and explore</label>
+          <label><input type="radio" name="Q11" value="D"> D) Have fun with zero-gravity, like catching food</label>
+          <label><input type="radio" name="Q11" value="E"> E) Take pictures and selfies</label>
+        </div>
+
+        <!-- Q12 -->
+        <div class="question reveal">
+          <h3>Q12: What’s your biggest strength?</h3>
+          <label><input type="radio" name="Q12" value="A" required> A) Listening to people</label>
+          <label><input type="radio" name="Q12" value="B"> B) Leadership and discipline</label>
+          <label><input type="radio" name="Q12" value="C"> C) Intelligence & problem solving</label>
+          <label><input type="radio" name="Q12" value="D"> D) Adaptability</label>
+          <label><input type="radio" name="Q12" value="E"> E) Imagination & creation</label>
+        </div>
+
+        <!-- Q13 -->
+        <div class="question reveal">
+          <h3>Q13: How do you act in a (friend) group?</h3>
+          <label><input type="radio" name="Q13" value="A" required> A) Quiet, observer</label>
+          <label><input type="radio" name="Q13" value="B"> B) Clumsy, silly & fun</label>
+          <label><input type="radio" name="Q13" value="C"> C) Leading, guiding</label>
+          <label><input type="radio" name="Q13" value="D"> D) Make jokes, prank them</label>
+          <label><input type="radio" name="Q13" value="E"> E) Social and loud</label>
+        </div>
+
+        <!-- Q14 -->
+        <div class="question reveal">
+          <h3>Q14: What’s your favorite music genre?</h3>
+          <label><input type="radio" name="Q14" value="A" required> A) Rock</label>
+          <label><input type="radio" name="Q14" value="B"> B) R&B / K‑Pop</label>
+          <label><input type="radio" name="Q14" value="C"> C) Rap / Hip‑hop / EDM</label>
+          <label><input type="radio" name="Q14" value="D"> D) Jazz / Lo‑fi / Classical / Ballad</label>
+          <label><input type="radio" name="Q14" value="E"> E) Reggaeton / Upbeat</label>
+        </div>
+
+        <!-- Q15 -->
+        <div class="question reveal">
+          <h3>Q15: Which motto fits you best?</h3>
+          <label><input type="radio" name="Q15" value="A" required> A) Better a scar from action than an ache from missed opportunity</label>
+          <label><input type="radio" name="Q15" value="B"> B) The smallest spark can light the galaxy.</label>
+          <label><input type="radio" name="Q15" value="C"> C) Strength grows in struggle</label>
+          <label><input type="radio" name="Q15" value="D"> D) Think bigger</label>
+          <label><input type="radio" name="Q15" value="E"> E) Focus on progress, not perfection</label>
+        </div>
+
+        <!-- Q16 -->
+        <div class="question reveal">
+          <h3>Q16: What annoys you the most when you’re home?</h3>
+          <label><input type="radio" name="Q16" value="A" required> A) Any noise</label>
+          <label><input type="radio" name="Q16" value="B"> B) Messiness and undone chores</label>
+          <label><input type="radio" name="Q16" value="C"> C) When you don’t have anything to eat</label>
+          <label><input type="radio" name="Q16" value="D"> D) People not respecting your space/privacy</label>
+          <label><input type="radio" name="Q16" value="E"> E) When there is nothing fun to do</label>
+        </div>
+
+        <!-- Q17 -->
+        <div class="question reveal">
+          <h3>Q17: How do you approach a new challenge?</h3>
+          <label><input type="radio" name="Q17" value="A" required> A) Take it slow and careful</label>
+          <label><input type="radio" name="Q17" value="B"> B) Research and organise every detail</label>
+          <label><input type="radio" name="Q17" value="C"> C) Just go for it and make it fun</label>
+          <label><input type="radio" name="Q17" value="D"> D) Plan it and trust your gut</label>
+          <label><input type="radio" name="Q17" value="E"> E) Observe others first and adapt as you go</label>
+        </div>
+
+        <!-- Q18 -->
+        <div class="question reveal">
+          <h3>Q18: What kind of weather do you like most?</h3>
+          <label><input type="radio" name="Q18" value="A" required> A) Snow and freezing weather</label>
+          <label><input type="radio" name="Q18" value="B"> B) Quiet cloudy day</label>
+          <label><input type="radio" name="Q18" value="C"> C) A hot summer day</label>
+          <label><input type="radio" name="Q18" value="D"> D) Sunny and windy day</label>
+          <label><input type="radio" name="Q18" value="E"> E) Rainy & thunder day</label>
         </div>
 
         <div class="actions reveal">
@@ -263,14 +394,26 @@
     function attachImage(imgEl, sources){let i=0;function next(){if(i>=sources.length){ imgEl.remove(); return;} imgEl.src=sources[i++];} imgEl.addEventListener('error',next); next();}
     (function renderBackground(){const bg=document.getElementById('bgDecor'); bg.innerHTML=''; BG_ORDER.forEach((name,idx)=>{ const srcs=IMAGE_SOURCES[name]||[]; if(!srcs.length) return; const img=document.createElement('img'); img.alt=name; img.className=`float f${idx+1}`; attachImage(img,srcs); bg.appendChild(img); });})();
 
-    // Scoring
+    // Scoring (updated for 18 questions)
     const POINTS={
-      Q1:{A:{Buni:1,Uri:1},B:{Sunny:1,Moony:1},C:{Moony:1,Pluty:1},D:{Marsy:1,Veny:1}},
-      Q2:{A:{Uri:1,Moony:1},B:{Pluty:1,Buni:1},C:{Sunny:1},D:{Marsy:1,Veny:1,Buni:1}},
-      Q3:{A:{Sunny:1},B:{Marsy:1,Buni:1},C:{Uri:1,Moony:1},D:{Veny:1}},
-      Q4:{A:{Pluty:1},B:{Sunny:1,Moony:1},C:{Buni:1},D:{Marsy:1,Pluty:1}},
-      Q5:{A:{Marsy:1,Uri:1},B:{Pluty:1,Buni:1},C:{Moony:1,Sunny:1},D:{Veny:1}},
-      Q6:{A:{Pluty:1,Uri:1},B:{Buni:1},C:{Moony:1,Sunny:1},D:{Veny:1,Marsy:1}}
+      Q1:{A:{Buni:1,Moony:1},B:{Pluty:1},C:{Sunny:1,Veny:1},D:{Uri:1,Marsy:1}},
+      Q2:{A:{Moony:1,Uri:1},B:{Buni:1},C:{Sunny:1},D:{Marsy:1,Veny:1},E:{Pluty:1}},
+      Q3:{A:{Moony:1,Sunny:1},B:{Buni:1,Veny:1},C:{Pluty:1},D:{Marsy:1},E:{Uri:1}},
+      Q4:{A:{Sunny:1},B:{Uri:1,Buni:1},C:{Marsy:1,Veny:1},D:{Pluty:1},E:{Moony:1}},
+      Q5:{A:{Buni:1,Veny:1},B:{Sunny:1},C:{Marsy:1},D:{Pluty:1},E:{Uri:1,Moony:1}},
+      Q6:{A:{Uri:1,Marsy:1},B:{Sunny:1,Moony:1},C:{Buni:1},D:{Veny:1},E:{Pluty:1}},
+      Q7:{A:{Uri:1},B:{Moony:1,Buni:1},C:{Marsy:1},D:{Sunny:1,Veny:1},E:{Pluty:1}},
+      Q8:{A:{Buni:1,Marsy:1},B:{Veny:1},C:{Sunny:1,Uri:1},D:{Moony:1},E:{Pluty:1}},
+      Q9:{A:{Moony:1,Buni:1},B:{Marsy:1},C:{Pluty:1},D:{Veny:1,Sunny:1},E:{Uri:1}},
+      Q10:{A:{Uri:1},B:{Marsy:1,Pluty:1},C:{Veny:1},D:{Sunny:1},E:{Moony:1,Buni:1}},
+      Q11:{A:{Uri:1,Moony:1},B:{Marsy:1,Buni:1},C:{Pluty:1},D:{Veny:1},E:{Sunny:1}},
+      Q12:{A:{Uri:1,Marsy:1},B:{Sunny:1,Moony:1},C:{Pluty:1},D:{Veny:1},E:{Buni:1}},
+      Q13:{A:{Uri:1,Pluty:1},B:{Buni:1,Marsy:1},C:{Moony:1},D:{Veny:1},E:{Sunny:1}},
+      Q14:{A:{Marsy:1},B:{Moony:1,Buni:1},C:{Veny:1},D:{Pluty:1,Uri:1},E:{Sunny:1}},
+      Q15:{A:{Moony:1,Buni:1},B:{Uri:1},C:{Marsy:1,Veny:1},D:{Pluty:1},E:{Sunny:1}},
+      Q16:{A:{Pluty:1},B:{Sunny:1,Moony:1},C:{Buni:1},D:{Marsy:1},E:{Veny:1}},
+      Q17:{A:{Uri:1},B:{Pluty:1},C:{Veny:1,Buni:1},D:{Moony:1},E:{Marsy:1,Sunny:1}},
+      Q18:{A:{Uri:1},B:{Pluty:1},C:{Sunny:1},D:{Veny:1,Moony:1},E:{Marsy:1,Buni:1}}
     };
 
     const form=document.getElementById('quizForm');
@@ -304,8 +447,9 @@
     }
 
     function updateProgress(){
-      const data=new FormData(form); let answered=0; const total=6;
-      for(const q of ['Q1','Q2','Q3','Q4','Q5','Q6']) if(data.get(q)) answered++;
+      const data=new FormData(form); let answered=0; const total=18;
+      const keys=[...Array(total)].map((_,i)=>`Q${i+1}`);
+      for(const q of keys) if(data.get(q)) answered++;
       const pct=(answered/total)*100; progressFill.style.width=`${Math.max(5,pct)}%`;
       progressLabel.textContent = answered<total ? `Question ${answered+1} of ${total}` : `Ready to submit`;
     }
