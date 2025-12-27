@@ -568,7 +568,7 @@
     }
 
     function updateProgress(){
-      const data=new FormData(form); let answered=0; const total=18;
+      const data=new FormData(form); let answered=0; const total=30;
       const keys=[...Array(total)].map((_,i)=>`Q${i+1}`);
       for(const q of keys) if(data.get(q)) answered++;
       const pct=(answered/total)*100; progressFill.style.width=`${Math.max(5,pct)}%`;
