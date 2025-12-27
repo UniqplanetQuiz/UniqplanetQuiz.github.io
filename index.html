@@ -91,4 +91,132 @@
 <div class="question">
 <h3>Q21: When a friend is overwhelmed, you…</h3>
 <label><input type="radio" name="Q21" value="A" required> Listen</label>
-<la
+<label><input type="radio" name="Q21" value="B"> Joke</label>
+<label><input type="radio" name="Q21" value="C"> Solve logically</label>
+<label><input type="radio" name="Q21" value="D"> Provide comfort</label>
+<label><input type="radio" name="Q21" value="E"> Give advice</label>
+</div>
+
+<!-- Q22 -->
+<div class="question">
+<h3>Q22: Which statement fits you?</h3>
+<label><input type="radio" name="Q22" value="A" required> Detail-oriented</label>
+<label><input type="radio" name="Q22" value="B"> Impulsive</label>
+<label><input type="radio" name="Q22" value="C"> In control</label>
+<label><input type="radio" name="Q22" value="D"> Easygoing</label>
+<label><input type="radio" name="Q22" value="E"> Thoughtful</label>
+</div>
+
+<!-- Q23 -->
+<div class="question">
+<h3>Q23: People come to you for…</h3>
+<label><input type="radio" name="Q23" value="A" required> Emotional support</label>
+<label><input type="radio" name="Q23" value="B"> Chatting</label>
+<label><input type="radio" name="Q23" value="C"> Leadership</label>
+<label><input type="radio" name="Q23" value="D"> Logic</label>
+<label><input type="radio" name="Q23" value="E"> Fun</label>
+</div>
+
+<!-- Q24 -->
+<div class="question">
+<h3>Q24: Comfort activity?</h3>
+<label><input type="radio" name="Q24" value="A" required> Creating</label>
+<label><input type="radio" name="Q24" value="B"> Music / videos</label>
+<label><input type="radio" name="Q24" value="C"> Coffee / shopping</label>
+<label><input type="radio" name="Q24" value="D"> Chaos</label>
+<label><input type="radio" name="Q24" value="E"> Reading</label>
+</div>
+
+<!-- Q25 -->
+<div class="question">
+<h3>Q25: What drains you fastest?</h3>
+<label><input type="radio" name="Q25" value="A" required> Conflict</label>
+<label><input type="radio" name="Q25" value="B"> Boredom</label>
+<label><input type="radio" name="Q25" value="C"> Inefficiency</label>
+<label><input type="radio" name="Q25" value="D"> Too social</label>
+<label><input type="radio" name="Q25" value="E"> Feeling trapped</label>
+</div>
+
+<!-- Q26 -->
+<div class="question">
+<h3>Q26: Decision making?</h3>
+<label><input type="radio" name="Q26" value="A" required> Emotions</label>
+<label><input type="radio" name="Q26" value="B"> Excitement</label>
+<label><input type="radio" name="Q26" value="C"> Logic</label>
+<label><input type="radio" name="Q26" value="D"> Experience</label>
+<label><input type="radio" name="Q26" value="E"> Balance</label>
+</div>
+
+<!-- Q27 -->
+<div class="question">
+<h3>Q27: Preferred vibe?</h3>
+<label><input type="radio" name="Q27" value="A" required> Dreamy</label>
+<label><input type="radio" name="Q27" value="B"> Confident</label>
+<label><input type="radio" name="Q27" value="C"> Bold</label>
+<label><input type="radio" name="Q27" value="D"> Cozy</label>
+<label><input type="radio" name="Q27" value="E"> Flashy</label>
+</div>
+
+<!-- Q28 -->
+<div class="question">
+<h3>Q28: Plans change?</h3>
+<label><input type="radio" name="Q28" value="A" required> Adjust calmly</label>
+<label><input type="radio" name="Q28" value="B"> Love chaos</label>
+<label><input type="radio" name="Q28" value="C"> Take charge</label>
+<label><input type="radio" name="Q28" value="D"> Retreat</label>
+<label><input type="radio" name="Q28" value="E"> Analyze</label>
+</div>
+
+<!-- Q29 -->
+<div class="question">
+<h3>Q29: End-of-day happiness?</h3>
+<label><input type="radio" name="Q29" value="A" required> Helping others</label>
+<label><input type="radio" name="Q29" value="B"> New things</label>
+<label><input type="radio" name="Q29" value="C"> Achievements</label>
+<label><input type="radio" name="Q29" value="D"> Peace</label>
+<label><input type="radio" name="Q29" value="E"> Balance</label>
+</div>
+
+<button type="submit">See my result</button>
+<button type="button" class="secondary" id="resetBtn">Reset</button>
+
+</form>
+<div id="result" class="card"></div>
+</section>
+</main>
+
+<script>
+const CHARACTERS=["Uri","Buni","Marsy","Veny","Moony","Pluty","Sunny"];
+
+const POINTS={
+Q19:{A:{Uri:1,Pluty:1},B:{Buni:1,Moony:1},C:{Marsy:1},D:{Sunny:1,Veny:1}},
+Q20:{A:{Uri:1},B:{Moony:1},C:{Buni:1,Veny:1},D:{Marsy:1},E:{Sunny:1}},
+Q21:{A:{Moony:1,Buni:1},B:{Veny:1},C:{Pluty:1},D:{Uri:1,Marsy:1},E:{Sunny:1}},
+Q22:{A:{Pluty:1},B:{Veny:1,Buni:1},C:{Sunny:1,Moony:1},D:{Marsy:1},E:{Uri:1}},
+Q23:{A:{Uri:1,Marsy:1},B:{Sunny:1},C:{Moony:1},D:{Pluty:1},E:{Veny:1,Buni:1}},
+Q24:{A:{Buni:1},B:{Uri:1,Marsy:1},C:{Moony:1,Sunny:1},D:{Veny:1},E:{Pluty:1}},
+Q25:{A:{Sunny:1},B:{Moony:1},C:{Pluty:1},D:{Marsy:1,Uri:1},E:{Buni:1,Veny:1}},
+Q26:{A:{Sunny:1,Uri:1},B:{Buni:1,Veny:1},C:{Pluty:1},D:{Marsy:1},E:{Moony:1}},
+Q27:{A:{Buni:1,Uri:1},B:{Moony:1},C:{Pluty:1},D:{Marsy:1},E:{Sunny:1,Veny:1}},
+Q28:{A:{Sunny:1,Uri:1},B:{Veny:1},C:{Moony:1},D:{Marsy:1,Buni:1},E:{Pluty:1}},
+Q29:{A:{Uri:1},B:{Buni:1},C:{Moony:1},D:{Pluty:1,Marsy:1},E:{Sunny:1}}
+};
+
+const form=document.getElementById("quizForm");
+const progressLabel=document.getElementById("progressLabel");
+const progressFill=document.getElementById("progressFill");
+
+function updateProgress(){
+  const data=new FormData(form);
+  let answered=0;
+  const total=30;
+  for(let i=1;i<=total;i++) if(data.get("Q"+i)) answered++;
+  progressLabel.textContent=`Question ${Math.min(answered+1,total)} of ${total}`;
+  progressFill.style.width=`${(answered/total)*100}%`;
+}
+form.addEventListener("change",updateProgress);
+updateProgress();
+</script>
+
+</body>
+</html>
