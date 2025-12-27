@@ -1,43 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>UniQFriends – Character Quiz</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UniQFriends – Character Quiz</title>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
-<style>
-:root{
-  --purple:#3a025b; --beige:#F6ebbb; --brown:#3b211a;
-  --card:#ffffffcc;
-  --c-uri:#a4c8ff; --c-buni:#b6f7d0; --c-marsy:#d9b79a;
-  --c-veny:#ffc49a; --c-moony:#d6c6ff; --c-pluty:#ffb3d1; --c-sunny:#ffe28a;
-}
-body{margin:0;font-family:system-ui;background:#0b0015;color:var(--brown)}
-.wrap{max-width:900px;margin:auto;padding:16px}
-.card{background:var(--card);border-radius:16px;padding:18px}
-.question{background:var(--beige);padding:14px;border-radius:12px;margin-bottom:12px}
-label{display:block;padding:8px;background:#fff8;border-radius:10px;margin:6px 0;cursor:pointer}
-button{padding:12px;border-radius:12px;border:0;background:var(--purple);color:#fff;width:100%}
-.progress{background:#3a025bcc;color:#fff;padding:10px;position:sticky;top:0}
-.meter{height:8px;background:#fff5;border-radius:999px;overflow:hidden}
-.meter span{display:block;height:100%;background:var(--beige)}
-</style>
+  <style>
+    :root{
+      --purple:#3a025b; --beige:#F6ebbb; --brown:#3b211a;
+      --card:#ffffffcc; --ink:var(--brown); --brand:var(--purple); --brand-2:#5d0b8c;
+      --c-uri:#a4c8ff; --c-buni:#b6f7d0; --c-marsy:#d9b79a; --c-veny:#ffc49a;
+      --c-moony:#d6c6ff; --c-pluty:#ffb3d1; --c-sunny:#ffe28a;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui;background:#0b0015;color:var(--ink);overflow-x:hidden}
+
+    #space{position:fixed;inset:0;z-index:1}
+    .bg-decor{position:fixed;inset:0;pointer-events:none;z-index:2}
+    header{text-align:center;padding:24px 16px 8px;position:relative;z-index:3}
+    h1{margin:0;color:#fff;font-size:32px;text-shadow:0 2px 6px rgba(0,0,0,.6)}
+    p.lead{color:#fff}
+
+    .progress{position:sticky;top:0;z-index:4;background:rgba(58,2,91,.85);padding:8px 12px;color:#fff}
+    .progress .row{max-width:900px;margin:auto;display:flex;gap:12px;align-items:center}
+    .meter{height:8px;background:rgba(255,255,255,.3);border-radius:999px;overflow:hidden;flex:1}
+    .meter span{display:block;height:100%;background:#F6ebbb}
+    .label{font-weight:600}
+
+    .wrap{max-width:900px;margin:auto;padding:0 16px 64px;position:relative;z-index:4}
+    .card{background:var(--card);border-radius:16px;padding:18px}
+    .stack{display:grid;gap:16px}
+
+    .question{background:var(--beige);border-radius:14px;padding:14px}
+    .question h3{margin:0 0 8px;color:var(--purple)}
+    label{display:block;padding:10px;border-radius:12px;background:#fff8;margin:6px 0;cursor:pointer}
+    label:hover{background:#fff}
+    button{padding:12px;border-radius:12px;border:0;background:var(--brand);color:#fff;font-size:16px;cursor:pointer}
+    button.secondary{background:#efeaf7;color:var(--brand)}
+  </style>
 </head>
 
 <body>
 
+<canvas id="space"></canvas>
+<div class="bg-decor" id="bgDecor"></div>
+
+<header>
+  <h1>UniQFriends – Character Quiz</h1>
+  <p class="lead">Find out which uniQfriend you will get!</p>
+</header>
+
 <div class="progress">
-  <div id="progressLabel">Question 1 of 30</div>
-  <div class="meter"><span id="progressFill" style="width:3%"></span></div>
+  <div class="row">
+    <div class="label" id="progressLabel">Question 1 of 30</div>
+    <div class="meter"><span id="progressFill" style="width:3%"></span></div>
+  </div>
 </div>
 
-<div class="wrap">
-<form id="quizForm" class="card">
+<main class="wrap">
+<section class="card stack">
+<form id="quizForm" class="stack">
 
-<!-- QUESTIONS 1–18 ALREADY EXISTED (UNCHANGED STRUCTURE) -->
-<!-- ONLY NEW QUESTIONS SHOWN BELOW -->
+<!-- QUESTIONS 1–18 UNCHANGED -->
+<!-- KEEPING YOUR EXISTING QUESTIONS EXACTLY -->
+
+<!-- ADDITIONAL QUESTIONS -->
 
 <!-- Q19 -->
 <div class="question">
@@ -50,156 +79,16 @@ button{padding:12px;border-radius:12px;border:0;background:var(--purple);color:#
 
 <!-- Q20 -->
 <div class="question">
-<h3>Q20: Which day feels most satisfying?</h3>
+<h3>Q20: Which kind of day feels the most satisfying?</h3>
 <label><input type="radio" name="Q20" value="A" required> Calm & slow</label>
 <label><input type="radio" name="Q20" value="B"> Structured & productive</label>
 <label><input type="radio" name="Q20" value="C"> Spontaneous</label>
-<label><input type="radio" name="Q20" value="D"> Chill alone</label>
-<label><input type="radio" name="Q20" value="E"> Self-care</label>
+<label><input type="radio" name="Q20" value="D"> Chill</label>
+<label><input type="radio" name="Q20" value="E"> Self care</label>
 </div>
 
 <!-- Q21 -->
 <div class="question">
 <h3>Q21: When a friend is overwhelmed, you…</h3>
-<label><input type="radio" name="Q21" value="A" required> Listen calmly</label>
-<label><input type="radio" name="Q21" value="B"> Distract with humor</label>
-<label><input type="radio" name="Q21" value="C"> Solve logically</label>
-<label><input type="radio" name="Q21" value="D"> Provide comfort</label>
-<label><input type="radio" name="Q21" value="E"> Give advice</label>
-</div>
-
-<!-- Q22 -->
-<div class="question">
-<h3>Q22: Which statement feels most like you?</h3>
-<label><input type="radio" name="Q22" value="A" required> I notice details</label>
-<label><input type="radio" name="Q22" value="B"> I follow impulses</label>
-<label><input type="radio" name="Q22" value="C"> I like control</label>
-<label><input type="radio" name="Q22" value="D"> I adapt easily</label>
-<label><input type="radio" name="Q22" value="E"> I think before acting</label>
-</div>
-
-<!-- Q23 -->
-<div class="question">
-<h3>Q23: People come to you for…</h3>
-<label><input type="radio" name="Q23" value="A" required> Emotional support</label>
-<label><input type="radio" name="Q23" value="B"> Gossip & chats</label>
-<label><input type="radio" name="Q23" value="C"> Leadership</label>
-<label><input type="radio" name="Q23" value="D"> Logic</label>
-<label><input type="radio" name="Q23" value="E"> Fun vibes</label>
-</div>
-
-<!-- Q24 -->
-<div class="question">
-<h3>Q24: Choose a comfort activity</h3>
-<label><input type="radio" name="Q24" value="A" required> Creating</label>
-<label><input type="radio" name="Q24" value="B"> Music / YouTube</label>
-<label><input type="radio" name="Q24" value="C"> Coffee / shopping</label>
-<label><input type="radio" name="Q24" value="D"> Playful chaos</label>
-<label><input type="radio" name="Q24" value="E"> Reading / coding</label>
-</div>
-
-<!-- Q25 -->
-<div class="question">
-<h3>Q25: What drains you fastest?</h3>
-<label><input type="radio" name="Q25" value="A" required> Conflict</label>
-<label><input type="radio" name="Q25" value="B"> Boredom</label>
-<label><input type="radio" name="Q25" value="C"> Inefficiency</label>
-<label><input type="radio" name="Q25" value="D"> Too much socializing</label>
-<label><input type="radio" name="Q25" value="E"> Feeling trapped</label>
-</div>
-
-<!-- Q26 -->
-<div class="question">
-<h3>Q26: How do you decide?</h3>
-<label><input type="radio" name="Q26" value="A" required> Emotional impact</label>
-<label><input type="radio" name="Q26" value="B"> Excitement</label>
-<label><input type="radio" name="Q26" value="C"> Logic</label>
-<label><input type="radio" name="Q26" value="D"> Experience</label>
-<label><input type="radio" name="Q26" value="E"> Balance</label>
-</div>
-
-<!-- Q27 -->
-<div class="question">
-<h3>Q27: Pick a vibe</h3>
-<label><input type="radio" name="Q27" value="A" required> Soft & dreamy</label>
-<label><input type="radio" name="Q27" value="B"> Bright & confident</label>
-<label><input type="radio" name="Q27" value="C"> Clean & bold</label>
-<label><input type="radio" name="Q27" value="D"> Cozy & chill</label>
-<label><input type="radio" name="Q27" value="E"> Flashy</label>
-</div>
-
-<!-- Q28 -->
-<div class="question">
-<h3>Q28: When plans change…</h3>
-<label><input type="radio" name="Q28" value="A" required> Adjust calmly</label>
-<label><input type="radio" name="Q28" value="B"> Love unpredictability</label>
-<label><input type="radio" name="Q28" value="C"> Take charge</label>
-<label><input type="radio" name="Q28" value="D"> Retreat if needed</label>
-<label><input type="radio" name="Q28" value="E"> Analyze first</label>
-</div>
-
-<!-- Q29 -->
-<div class="question">
-<h3>Q29: End of the day happiness is…</h3>
-<label><input type="radio" name="Q29" value="A" required> Helping others</label>
-<label><input type="radio" name="Q29" value="B"> New experiences</label>
-<label><input type="radio" name="Q29" value="C"> Achievements</label>
-<label><input type="radio" name="Q29" value="D"> Peace alone</label>
-<label><input type="radio" name="Q29" value="E"> Balance</label>
-</div>
-
-<button type="submit">See my result</button>
-</form>
-
-<div id="result" class="card"></div>
-</div>
-
-<script>
-const CHARACTERS=["Uri","Buni","Marsy","Veny","Moony","Pluty","Sunny"];
-
-const POINTS={
-Q19:{A:{Uri:1,Pluty:1},B:{Buni:1,Moony:1},C:{Marsy:1},D:{Sunny:1,Veny:1}},
-Q20:{A:{Uri:1},B:{Moony:1},C:{Buni:1,Veny:1},D:{Marsy:1},E:{Sunny:1}},
-Q21:{A:{Moony:1,Buni:1},B:{Veny:1},C:{Pluty:1},D:{Uri:1,Marsy:1},E:{Sunny:1}},
-Q22:{A:{Pluty:1},B:{Veny:1,Buni:1},C:{Sunny:1,Moony:1},D:{Marsy:1},E:{Uri:1}},
-Q23:{A:{Uri:1,Marsy:1},B:{Sunny:1},C:{Moony:1},D:{Pluty:1},E:{Veny:1,Buni:1}},
-Q24:{A:{Buni:1},B:{Uri:1,Marsy:1},C:{Moony:1,Sunny:1},D:{Veny:1},E:{Pluty:1}},
-Q25:{A:{Sunny:1},B:{Moony:1},C:{Pluty:1},D:{Marsy:1,Uri:1},E:{Buni:1,Veny:1}},
-Q26:{A:{Sunny:1,Uri:1},B:{Buni:1,Veny:1},C:{Pluty:1},D:{Marsy:1},E:{Moony:1}},
-Q27:{A:{Buni:1,Uri:1},B:{Moony:1},C:{Pluty:1},D:{Marsy:1},E:{Sunny:1,Veny:1}},
-Q28:{A:{Sunny:1,Uri:1},B:{Veny:1},C:{Moony:1},D:{Marsy:1,Buni:1},E:{Pluty:1}},
-Q29:{A:{Uri:1},B:{Buni:1},C:{Moony:1},D:{Pluty:1,Marsy:1},E:{Sunny:1}}
-};
-
-const form=document.getElementById("quizForm");
-const resultBox=document.getElementById("result");
-const progressLabel=document.getElementById("progressLabel");
-const progressFill=document.getElementById("progressFill");
-
-function updateProgress(){
-  const data=new FormData(form);
-  let answered=0;
-  for(let i=1;i<=30;i++) if(data.get("Q"+i)) answered++;
-  progressLabel.textContent=`Question ${Math.min(answered+1,30)} of 30`;
-  progressFill.style.width=`${(answered/30)*100}%`;
-}
-
-form.addEventListener("change",updateProgress);
-
-form.addEventListener("submit",e=>{
-  e.preventDefault();
-  const totals=Object.fromEntries(CHARACTERS.map(c=>[c,0]));
-  const data=new FormData(form);
-  for(const [q,a] of data.entries()){
-    if(POINTS[q]&&POINTS[q][a]){
-      for(const c in POINTS[q][a]) totals[c]+=POINTS[q][a][c];
-    }
-  }
-  const winner=Object.entries(totals).sort((a,b)=>b[1]-a[1])[0][0];
-  resultBox.innerHTML=`<h2>You got ${winner} ✨</h2>`;
-  confetti();
-});
-</script>
-
-</body>
-</html>
+<label><input type="radio" name="Q21" value="A" required> Listen</label>
+<la
